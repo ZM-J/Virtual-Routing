@@ -14,3 +14,7 @@ Application-layer routing program, using UDP
 - centralized routing
   - Like the above self-organized routing
   - Controller determines and distributes routing policy (routing table) to each member
+
+- can choose different topo(the 2 above) & different routing algorithms
+  - LS
+  - DV
