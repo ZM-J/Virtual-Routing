@@ -18,3 +18,24 @@ Application-layer routing program, using UDP
 - can choose different topo(the 2 above) & different routing algorithms
   - LS
   - DV
+
+## Coding Doc [Un-completed]
+
+All PC Nodes will run as a `Node`. Before a `Node.Start()`, the `RouteAlgoType` and `ActionMode` MUST be specified. OR it will panic out and exit.
+
+```cpp
+Node n;
+n.SetRouteAlgoType(RouteAlgoType::LS);
+n.SetActionMode(ActionMode::NORMAL);
+n.Start();
+```
+
+### Classes Hierarchy
+
+- Args [Singleton] : store the args
+- Node : Abstract of the Nodes in routing
+- RouteAlgo : virtual base class for the Routing-Algorithm
+  - RouteLS : Link-State Algorithm
+  - RouteDV : Distance-Vector Algorithm
+
+The `RouteLS` or `RouteDV` class will be initialized **automatically** inside a `Node` as soon as `SetRouteAlgoType()` is called. So DON'T init a `RouteAlgo` manually.
