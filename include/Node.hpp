@@ -2,6 +2,7 @@
 #include "./Args.hpp"
 #include "./RouteAlgo.hpp"
 
+#include <initializer_list>
 #include <vector>
 
 /**
@@ -17,19 +18,27 @@ class RouteNode {
    public:
     RouteNode();
     ~RouteNode();
-    int SetRouteAlgoType(RouteAlgoType t);
-    int SetActionMode(ActionMode am);
-
     int Start();
+    int Stop();
+
+    int SetRouteAlgoType(RouteAlgoType);
+    int SetActionMode(ActionMode);
+
+    int AddDirectConnection(std::initializer_list<int>);
+    int DeleteDirectConnection(std::initializer_list<int>);
+
+    int JoinTopo();
+    int LeaveTopo();
 
    protected:
     // RouteAlgoType : cannot Start() if not set
     RouteAlgoType algoType;
-    RouteAlgo *routeAlgo;
+    std::shared_ptr<RouteAlgo> routeAlgo;
     // ActionMode : cannot Start() if not set
     ActionMode actionMode;
 
     std::vector<std::vector<int> > routeTable;
 
    private:
+    bool running;
 };
