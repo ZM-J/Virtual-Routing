@@ -1,6 +1,6 @@
 // Routing-Algorithm : Link-State
 
-#include "./RouteAlgo.hpp"
+#include "./route_algo.h"
 
 #include <string>
 #include <vector>
@@ -12,7 +12,7 @@ class RouteLS : public RouteAlgo {
     std::vector<int> JudgePath(int, int);
 
    protected:
-    std::vector<std::vector<int> > routeTable;
+    std::vector<std::vector<int> > routeTable_;
     std::string serializeMsg(std::vector<std::vector<int> >&);
     std::vector<std::vector<int> > parseMsg(std::string);
 };
