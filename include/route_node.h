@@ -1,6 +1,6 @@
 // NormalNode : Exchange route information to each-other
-#include "./Args.hpp"
-#include "./RouteAlgo.hpp"
+#include "./args.h"
+#include "./route_algo.h"
 
 #include <initializer_list>
 #include <vector>
