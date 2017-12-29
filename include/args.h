@@ -9,9 +9,9 @@ class Args {
 
    protected:
     // Total Number of Nodes
-    int NodesNumber;
+    int nodes_number_;
     // store the initial topo table.
-    std::vector<std::vector<int> > initTopoTable;
+    std::vector<std::vector<int> > initTopoTable_;
     // std::vector<std::vector<std::vector<int> > > initRouteTables;
 
    private:

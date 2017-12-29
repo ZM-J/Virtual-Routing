@@ -1,4 +1,4 @@
-#include "Args.hpp"
+#include "args.h"
 
 std::shared_ptr<Args> Args::m_args = nullptr;
 
