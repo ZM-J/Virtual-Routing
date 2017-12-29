@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "route_node.h"
 #include "RouteDV.hpp"
 #include "RouteLS.hpp"
 
@@ -8,59 +8,59 @@
 using namespace std;
 
 RouteNode::RouteNode() {
-    algoType = RouteAlgoType::NONE_Algo;
-    actionMode = ActionMode::NONE_Action;
-    running = false;
+    algoType_ = RouteAlgoType::NONE_Algo;
+    actionMode_ = ActionMode::NONE_Action;
+    running_ = false;
 }
 
 RouteNode::~RouteNode() {
     // release the memory of RouteAlgo
-    routeAlgo = nullptr;
+    routeAlgo_ = nullptr;
 }
 
 int RouteNode::Start() {
     bool check_ok = true;
-    if (algoType == RouteAlgoType::NONE_Algo) {
+    if (algoType_ == RouteAlgoType::NONE_Algo) {
         check_ok = false;
         cout << "Routing Algorithm hasn\'t been specified. (LS, DV)" << endl;
     }
-    if (actionMode == ActionMode::NONE_Action) {
+    if (actionMode_ == ActionMode::NONE_Action) {
         check_ok = false;
         cout << "Action Mode hasn\'t been specified. (NORMAL, CLIENT, "
                 "CONTROLLER)"
              << endl;
     }
     if (!check_ok) return;
-    while (running) {
+    while (running_) {
         // Send & Recv Routing Msg periodically
     }
     return 0;
 }
 
 int RouteNode::Stop() {
-    running = false;
+    running_ = false;
     return 0;
 }
 
 int RouteNode::SetRouteAlgoType(RouteAlgoType t) {
-    if (t == algoType) return;
-    routeAlgo = nullptr;
+    if (t == algoType_) return;
+    routeAlgo_ = nullptr;
     switch
         t {
             case RouteAlgoType::LS:
-                routeAlgo = make_shared<RouteLS>();
+                routeAlgo_ = make_shared<RouteLS>();
                 break;
             case RouteAlgoType::DV:
-                routeAlgo = make_shared<RouteDV>();
+                routeAlgo_ = make_shared<RouteDV>();
                 break;
         }
-    algoType = t;
+    algoType_ = t;
     return 0;
 }
 
 int RouteNode::SetActionMode(ActionMode am) {
-    if (am == actionMode) return;
-    actionMode = am;
+    if (am == actionMode_) return;
+    actionMode_ = am;
     return 0;
 }
 

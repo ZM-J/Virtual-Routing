@@ -32,13 +32,13 @@ class RouteNode {
 
    protected:
     // RouteAlgoType : cannot Start() if not set
-    RouteAlgoType algoType;
-    std::shared_ptr<RouteAlgo> routeAlgo;
+    RouteAlgoType algoType_;
+    std::shared_ptr<RouteAlgo> routeAlgo_;
     // ActionMode : cannot Start() if not set
-    ActionMode actionMode;
+    ActionMode actionMode_;
 
-    std::vector<std::vector<int> > routeTable;
+    std::vector<std::vector<int> > routeTable_;
 
    private:
-    bool running;
+    bool running_;
 };
