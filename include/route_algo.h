@@ -1,5 +1,8 @@
 // base class for different routing algorithm
 
+#include "./args.h"
+
+#include <map>
 #include <string>
 #include <vector>
 
@@ -10,7 +13,8 @@ class RouteAlgo {
     virtual std::vector<int> JudgePath(int, int) = 0;
 
    protected:
-    std::vector<std::vector<int> > routeTable;
-    virtual std::string serializeMsg(std::vector<std::vector<int> >&) = 0;
-    virtual std::vector<std::vector<int> > parseMsg(std::string) = 0;
+    std::vector<std::vector<int>> route_table_;
+    std::map<std::string, ReachabilityEnum> connectivity_;
+    int SendConnectionCheck();
+    int RecvConnectionCheck();
 };
