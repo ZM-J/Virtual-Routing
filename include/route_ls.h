@@ -10,9 +10,4 @@ class RouteLS : public RouteAlgo {
     int SendRouteMsg(std::string, std::string);
     int RecvRouteMsg(std::string&);
     std::vector<int> JudgePath(int, int);
-
-   protected:
-    std::vector<std::vector<int> > routeTable_;
-    std::string serializeMsg(std::vector<std::vector<int> >&);
-    std::vector<std::vector<int> > parseMsg(std::string);
 };
