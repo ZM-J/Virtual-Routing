@@ -20,13 +20,13 @@ Args::Args() {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) init_topo_table_[i][j] = 99999;
     }
-    init_topo_table_[0][2] = init_topo_table_[2][0] = 1;
-    init_topo_table_[0][3] = init_topo_table_[3][0] = 1;
-    init_topo_table_[0][4] = init_topo_table_[4][0] = 1;
+    init_topo_table_[0][2] = init_topo_table_[2][0] = 3;
+    init_topo_table_[0][3] = init_topo_table_[3][0] = 4;
+    init_topo_table_[0][4] = init_topo_table_[4][0] = 6;
 
-    init_topo_table_[1][3] = init_topo_table_[3][1] = 1;
-    init_topo_table_[1][4] = init_topo_table_[4][1] = 1;
-    init_topo_table_[2][3] = init_topo_table_[3][2] = 1;
+    init_topo_table_[1][3] = init_topo_table_[3][1] = 2;
+    init_topo_table_[1][4] = init_topo_table_[4][1] = 6;
+    init_topo_table_[2][3] = init_topo_table_[3][2] = 8;
 }
 Args::~Args() { Args::m_args = nullptr; }
 
