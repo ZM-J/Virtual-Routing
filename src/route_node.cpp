@@ -8,23 +8,23 @@
 using namespace std;
 
 RouteNode::RouteNode() {
-    algoType_ = RouteAlgoType::NONE_Algo;
-    actionMode_ = ActionMode::NONE_Action;
+    algo_type_ = RouteAlgoType::NONE_Algo;
+    action_mode_ = ActionMode::NONE_Action;
     running_ = false;
 }
 
 RouteNode::~RouteNode() {
     // release the memory of RouteAlgo
-    routeAlgo_ = nullptr;
+    route_algo_ = nullptr;
 }
 
 int RouteNode::Start() {
     bool check_ok = true;
-    if (algoType_ == RouteAlgoType::NONE_Algo) {
+    if (algo_type_ == RouteAlgoType::NONE_Algo) {
         check_ok = false;
         cout << "Routing Algorithm hasn\'t been specified. (LS, DV)" << endl;
     }
-    if (actionMode_ == ActionMode::NONE_Action) {
+    if (action_mode_ == ActionMode::NONE_Action) {
         check_ok = false;
         cout << "Action Mode hasn\'t been specified. (NORMAL, CLIENT, "
                 "CONTROLLER)"
@@ -33,6 +33,9 @@ int RouteNode::Start() {
     if (!check_ok) return;
     while (running_) {
         // Send & Recv Routing Msg periodically
+        // Reachability Message Exchange
+
+        // Send LS table
     }
     return 0;
 }
@@ -43,24 +46,24 @@ int RouteNode::Stop() {
 }
 
 int RouteNode::SetRouteAlgoType(RouteAlgoType t) {
-    if (t == algoType_) return;
-    routeAlgo_ = nullptr;
+    if (t == algo_type_) return;
+    route_algo_ = nullptr;
     switch
         t {
             case RouteAlgoType::LS:
-                routeAlgo_ = make_shared<RouteLS>();
+                route_algo_ = make_unique<RouteLS>();
                 break;
             case RouteAlgoType::DV:
-                routeAlgo_ = make_shared<RouteDV>();
+                route_algo_ = make_unique<RouteDV>();
                 break;
         }
-    algoType_ = t;
+    algo_type_ = t;
     return 0;
 }
 
 int RouteNode::SetActionMode(ActionMode am) {
-    if (am == actionMode_) return;
-    actionMode_ = am;
+    if (am == action_mode_) return;
+    action_mode_ = am;
     return 0;
 }
 

@@ -1,8 +1,10 @@
 // NormalNode : Exchange route information to each-other
 #include "./args.h"
 #include "./route_algo.h"
+#include "./route_message.h"
 
 #include <initializer_list>
+#include <map>
 #include <vector>
 
 /**
@@ -32,12 +34,13 @@ class RouteNode {
 
    protected:
     // RouteAlgoType : cannot Start() if not set
-    RouteAlgoType algoType_;
-    std::shared_ptr<RouteAlgo> routeAlgo_;
+    RouteAlgoType algo_type_;
+    std::shared_ptr<RouteAlgo> route_algo_;
     // ActionMode : cannot Start() if not set
-    ActionMode actionMode_;
+    ActionMode action_mode_;
 
-    std::vector<std::vector<int> > routeTable_;
+    std::vector<std::vector<int> > route_table_;
+    std::map<std::string, ReachabilityEnum> connectivity_;
 
    private:
     bool running_;
