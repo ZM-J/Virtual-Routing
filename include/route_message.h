@@ -7,8 +7,7 @@ using namespace std;
  * from_ip, dest_ip
  * check_flag :
  */
-enum class ReachabilityEnum { SYN, ACK, RACK };
-enum class ConnectionStatus { ESTABLISHED, DISCONNECTED };
+enum class ReachabilityEnum { kCheckConnect, kConnectOK, kDisconnected };
 
 template <typename T>
 std::ostream& operator<<(
