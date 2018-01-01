@@ -1,5 +1,7 @@
 // Args : Use SingleInstance
 
+#include <map>
+#include <string>
 #include <vector>
 
 class Args {
@@ -11,8 +13,8 @@ class Args {
     // Total Number of Nodes
     int nodes_number_;
     // store the initial topo table.
-    std::vector<std::vector<int> > initTopoTable_;
-    // std::vector<std::vector<std::vector<int> > > initRouteTables;
+    std::vector<std::vector<int> > init_topo_table_;
+    std::map<int, std::string> member_ips_;
 
    private:
     Args();
