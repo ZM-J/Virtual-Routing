@@ -26,12 +26,6 @@ class RouteNode {
     int SetRouteAlgoType(RouteAlgoType);
     int SetActionMode(ActionMode);
 
-    int AddDirectConnection(std::initializer_list<int>);
-    int DeleteDirectConnection(std::initializer_list<int>);
-
-    int JoinTopo();
-    int LeaveTopo();
-
    protected:
     // RouteAlgoType : cannot Start() if not set
     RouteAlgoType algo_type_;
@@ -39,9 +33,13 @@ class RouteNode {
     // ActionMode : cannot Start() if not set
     ActionMode action_mode_;
 
-    std::vector<std::vector<int> > route_table_;
-    std::map<std::string, ReachabilityEnum> connectivity_;
-
    private:
     bool running_;
+
+    int WaitForCommands();
+
+    int AddDirectConnection(std::initializer_list<int>);
+    int DeleteDirectConnection(std::initializer_list<int>);
+    int JoinTopo();
+    int LeaveTopo();
 };

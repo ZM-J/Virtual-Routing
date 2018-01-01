@@ -31,11 +31,18 @@ int RouteNode::Start() {
              << endl;
     }
     if (!check_ok) return;
-    while (running_) {
-        // Send & Recv Routing Msg periodically
-        // Reachability Message Exchange
+    // while (running_) {
+    //     // Send & Recv Routing Msg periodically
+    //     // Reachability Message Exchange
 
-        // Send LS table
+    //     // Send LS table
+    // }
+    return 0;
+}
+
+int RouteNode::WaitForCommands() {
+    while (running_) {
+        // Wait for stdinput
     }
     return 0;
 }
@@ -67,6 +74,7 @@ int RouteNode::SetActionMode(ActionMode am) {
     return 0;
 }
 
+// Specific commands
 int RouteNode::AddDirectConnection(initializer_list<int> conl) {
     // Modify the local topo table;
     // ..
