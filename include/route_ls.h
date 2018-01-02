@@ -4,7 +4,6 @@
 
 #include "./route_algo.h"
 #include "./route_message.h"
-#include "./thread_safe_queue.h"
 
 #include <map>
 #include <queue>
