@@ -1,4 +1,6 @@
 // Args : Use SingleInstance
+#ifndef VIRTUAL_ROUTING_ARGS
+#define VIRTUAL_ROUTING_ARGS
 
 #include <map>
 #include <string>
@@ -23,3 +25,5 @@ class Args {
 
 enum class RouteAlgoType { NONE, LS, DV };
 enum class ActionMode { NONE, NORMAL, CLIENT, CONTROLLER };
+
+#endif

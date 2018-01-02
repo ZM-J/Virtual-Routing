@@ -2,6 +2,9 @@
 
 using namespace std;
 
+#ifndef ROUTE_MESSAGE
+#define ROUTE_MESSAGE
+
 /**
  * Reachability protocol Msg
  * from_ip, dest_ip
@@ -19,3 +22,5 @@ std::ostream& operator<<(
 struct ReachabilityMessage;
 struct LSAdvertisement;
 struct DVAdvertisement;
+
+#endif
