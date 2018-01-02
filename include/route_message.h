@@ -1,10 +1,7 @@
-#include <sstream>
-
-using namespace std;
-
 #ifndef ROUTE_MESSAGE
 #define ROUTE_MESSAGE
 
+#include <sstream>
 /**
  * Reachability protocol Msg
  * from_ip, dest_ip

@@ -1,4 +1,6 @@
 // base class for different routing algorithm
+#ifndef VIRTUAL_ROUTING_ROUTE_ALGO
+#define VIRTUAL_ROUTING_ROUTE_ALGO
 
 #include "./args.h"
 #include "./thread_safe_queue.h"
@@ -31,3 +33,5 @@ class RouteAlgo {
     std::vector<std::vector<int>> connectivity_table_;
     Queue<pair<string, string>> msg_to_send_;
 };
+
+#endif

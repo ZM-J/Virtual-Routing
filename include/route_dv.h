@@ -1,4 +1,6 @@
 // Routing-Algorithm : Distance-Vector
+#ifndef VIRTUAL_ROUTING_ROUTE_DV
+#define VIRTUAL_ROUTING_ROUTE_DV
 
 #include "./route_algo.h"
 
@@ -16,3 +18,5 @@ class RouteDV : public RouteAlgo {
     std::string serializeMsg(std::vector<std::vector<int> >&);
     std::vector<std::vector<int> > parseMsg(std::string);
 };
+
+#endif

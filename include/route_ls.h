@@ -1,4 +1,6 @@
 // Routing-Algorithm : Link-State
+#ifndef VIRTUAL_ROUTING_ROUTE_LS
+#define VIRTUAL_ROUTING_ROUTE_LS
 
 #include "./route_algo.h"
 #include "./route_message.h"
@@ -21,3 +23,5 @@ class RouteLS : public RouteAlgo {
 
     // Queue<pair<string, string>> msg_to_send_; inherited from RouteAlgo
 };
+
+#endif
