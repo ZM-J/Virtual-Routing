@@ -108,6 +108,8 @@ int RouteNode::SetRouteAlgoType(RouteAlgoType t) {
         case RouteAlgoType::DV:
             route_algo_ = make_unique<RouteDV>();
             break;
+        case RouteAlgoType::NONE:
+            break;
     }
     algo_type_ = t;
     return 0;
