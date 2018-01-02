@@ -2,6 +2,9 @@
 #include "./args.h"
 #include "./route_algo.h"
 #include "./route_message.h"
+#include "./socket_receiver.h"
+#include "./socket_sender.h"
+#include "./thread_safe_queue.h"
 
 #include <initializer_list>
 #include <map>
@@ -35,9 +38,20 @@ class RouteNode {
 
    private:
     bool running_;
+    std::thread th_send_msg_;
+    std::thread th_recv_msg_;
+    std::thread th_commands_;
+    std::map<std::string, ReachabilityEnum> connectivity_;
+
+    SocketSender sender_;
+    SocketReceiver receiver_;
+    Queue<std::pair<std::string, std::string>> send_msg_queue_;
+    int StartSendMsg();
+    int StartRecvMsg();
 
     int WaitForCommands();
 
+    // some commands, not determined. feel free to modify :P
     int AddDirectConnection(std::initializer_list<int>);
     int DeleteDirectConnection(std::initializer_list<int>);
     int JoinTopo();
