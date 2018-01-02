@@ -75,3 +75,16 @@ struct LSAdvertisement {
         return ostrs.str();
     }
 };
+
+struct DVAdvertisement {
+    // not determined yet, feel free to modify
+
+    DVAdvertisement() = default;
+    DVAdvertisement(const std::string& raw_msg_str) {
+        // ..
+    }
+    std::string GetSerializedMsg() {
+        // ..
+        return "";
+    }
+};

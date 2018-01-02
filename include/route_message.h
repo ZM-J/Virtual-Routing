@@ -18,3 +18,4 @@ std::ostream& operator<<(
 
 struct ReachabilityMessage;
 struct LSAdvertisement;
+struct DVAdvertisement;
