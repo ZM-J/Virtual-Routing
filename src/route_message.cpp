@@ -26,7 +26,8 @@ struct ReachabilityMessage {
         const char* fip = from_ip.c_str();
         const char* dip = dest_ip.c_str();
         char msg_cstr[40];
-        sprintf(msg_cstr, "%s,%s|%d", fip, dip, static_cast<int>(check_flag));
+        // Reachability Message Header: Started with a single "R"
+        sprintf(msg_cstr, "R%s,%s|%d", fip, dip, static_cast<int>(check_flag));
         return std::string(msg_cstr);
     }
 };
@@ -62,6 +63,8 @@ struct LSAdvertisement {
 
     std::string GetSerializedMsg() {
         std::ostringstream ostrs;
+        // LS datagram Header: Start with a single "L"
+        ostrs << "L";
         ostrs << generated_from_ip << "|";
         ostrs << seq_number << ";";
         for (auto& ip : neighbor_ips) {
