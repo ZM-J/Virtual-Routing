@@ -2,7 +2,7 @@
 #include "args.h"
 #include "route_dv.h"
 #include "route_ls.h"
-#include "route_message.h"
+#include "route_message.cpp"
 
 #include <functional>
 #include <initializer_list>
@@ -83,7 +83,7 @@ int RouteNode::Start() {
                 "CONTROLLER)"
              << endl;
     }
-    if (!check_ok) return;
+    if (!check_ok) return 1;
     th_send_msg_ = std::thread([&] { StartSendMsg(); });
     th_recv_msg_ = std::thread([&] { StartRecvMsg(); });
     th_commands_ = std::thread([&] { WaitForCommands(); });
@@ -99,7 +99,7 @@ int RouteNode::Stop() {
 }
 
 int RouteNode::SetRouteAlgoType(RouteAlgoType t) {
-    if (t == algo_type_) return;
+    if (t == algo_type_) return 0;
     route_algo_ = nullptr;
     switch (t) {
         case RouteAlgoType::LS:
@@ -114,7 +114,7 @@ int RouteNode::SetRouteAlgoType(RouteAlgoType t) {
 }
 
 int RouteNode::SetActionMode(ActionMode am) {
-    if (am == action_mode_) return;
+    if (am == action_mode_) return 0;
     action_mode_ = am;
     return 0;
 }
