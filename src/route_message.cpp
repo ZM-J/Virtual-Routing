@@ -6,6 +6,8 @@
 #include <utility>
 #include <vector>
 
+using namespace std;
+
 struct ReachabilityMessage {
     std::string from_ip;
     std::string dest_ip;
