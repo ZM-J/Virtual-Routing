@@ -13,7 +13,7 @@
 class RouteLS : public RouteAlgo {
    public:
     vector<int> JudgePath(int, int);
-    int UpdateRouteMsg(string&);
+    int UpdateRouteMsg(const std::string&);
     queue<pair<string, string>> GenerateRouteMsg();
 
     // more funcs ...
