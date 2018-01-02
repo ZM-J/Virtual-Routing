@@ -3,20 +3,24 @@
 #define VIRTUAL_ROUTING_ROUTE_DV
 
 #include "./route_algo.h"
+#include "./route_message.h"
 
+#include <map>
+#include <queue>
 #include <string>
-#include <vector>
 
 class RouteDV : public RouteAlgo {
    public:
-    int SendRouteMsg(std::string, std::string);
-    int RecvRouteMsg(std::string&);
-    std::vector<int> JudgePath(int, int);
+    vector<int> JudgePath(int, int);
+    int UpdateRouteMsg(const std::string&);
+    queue<pair<string, string>> GenerateRouteMsg();
 
-   protected:
-    std::vector<std::vector<int> > routeTable;
-    std::string serializeMsg(std::vector<std::vector<int> >&);
-    std::vector<std::vector<int> > parseMsg(std::string);
+    // more funcs ...
+
+   private:
+    map<string, DVAdvertisement> others_advertisements_;
+
+    // Queue<pair<string, string>> msg_to_send_; inherited from RouteAlgo
 };
 
 #endif
