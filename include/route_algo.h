@@ -14,6 +14,8 @@ using namespace std;
 
 class RouteAlgo {
    public:
+    RouteAlgo() = default;
+    ~RouteAlgo() = default;
     virtual int UpdateRouteMsg(const std::string&) = 0;
     // GenereateRouteMsg is to Genereate route msg by itself
     virtual queue<pair<string, string>> GenerateRouteMsg() = 0;
@@ -27,8 +29,6 @@ class RouteAlgo {
     queue<pair<string, string>> GetOtherMsgToSend();
 
    protected:
-    RouteAlgo() = default;
-    ~RouteAlgo() = default;
     std::vector<std::vector<int>> route_table_;
     std::vector<std::vector<int>> connectivity_table_;
     Queue<pair<string, string>> msg_to_send_;
