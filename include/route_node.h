@@ -35,7 +35,7 @@ class RouteNode {
    protected:
     // RouteAlgoType : cannot Start() if not set
     RouteAlgoType algo_type_;
-    std::shared_ptr<RouteAlgo> route_algo_;
+    std::unique_ptr<RouteAlgo> route_algo_;
     // ActionMode : cannot Start() if not set
     ActionMode action_mode_;
 
