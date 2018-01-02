@@ -1,3 +1,6 @@
+#ifndef VIRTUAL_ROUTING_SOCKET_SENDER
+#define VIRTUAL_ROUTING_SOCKET_SENDER
+
 #include <netinet/in.h>
 #include <string>
 
@@ -10,3 +13,5 @@ class SocketSender {
     ~SocketSender();
     int Send(std::string dest_ip, std::string msg);
 };
+
+#endif

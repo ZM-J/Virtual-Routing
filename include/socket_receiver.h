@@ -1,3 +1,6 @@
+#ifndef VIRTUAL_ROUTING_SOCKET_RECEIVER
+#define VIRTUAL_ROUTING_SOCKET_RECEIVER
+
 #include <netinet/in.h>
 #include <functional>
 #include <string>
@@ -17,3 +20,5 @@ class SocketReceiver {
                          std::function<int(std::string)>);
     void StopReceiving();
 };
+
+#endif

@@ -1,4 +1,7 @@
 // NormalNode : Exchange route information to each-other
+#ifndef VIRTUAL_ROUTING_ROUTE_NODE
+#define VIRTUAL_ROUTING_ROUTE_NODE
+
 #include "./args.h"
 #include "./route_algo.h"
 #include "./route_message.h"
@@ -57,3 +60,5 @@ class RouteNode {
     int JoinTopo();
     int LeaveTopo();
 };
+
+#endif
