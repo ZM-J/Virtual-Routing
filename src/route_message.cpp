@@ -15,7 +15,8 @@ struct ReachabilityMessage {
     ReachabilityMessage(const std::string& raw_msg_str) {
         string::size_type ip_sep_pos = raw_msg_str.find(',');
         string::size_type chk_sep_pos = raw_msg_str.find('|');
-        from_ip = raw_msg_str.substr(0, ip_sep_pos);
+        // Remember to ignore the "R" Header (substr() start with index 1)
+        from_ip = raw_msg_str.substr(1, ip_sep_pos);
         dest_ip =
             raw_msg_str.substr(ip_sep_pos + 1, chk_sep_pos - ip_sep_pos - 1);
         check_flag = static_cast<ReachabilityEnum>(
@@ -42,7 +43,8 @@ struct LSAdvertisement {
     LSAdvertisement(const std::string& raw_msg_str) {
         string::size_type pos_gen_ip_end = raw_msg_str.find('|');
         string::size_type pos_seq_num_end = raw_msg_str.find(';');
-        generated_from_ip = raw_msg_str.substr(0, pos_gen_ip_end);
+        // Remember to ignore the "L" Header (substr() start with index 1)
+        generated_from_ip = raw_msg_str.substr(1, pos_gen_ip_end);
         seq_number = stoi(raw_msg_str.substr(
             pos_gen_ip_end + 1, pos_seq_num_end - pos_gen_ip_end - 1));
 
