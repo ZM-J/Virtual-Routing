@@ -13,7 +13,7 @@ std::vector<int> RouteLS::JudgePath(int from, int dest) {
     auto args_instance = Args::GetInstance();
 }
 
-int RouteLS::UpdateRouteMsg(std::string& raw_msg_str) {
+int RouteLS::UpdateRouteMsg(const std::string& raw_msg_str) {
     LSAdvertisement ls_msg(raw_msg_str);
     // do something like the following
     // check others_advertisements_, if comes a seq_number, update it and
