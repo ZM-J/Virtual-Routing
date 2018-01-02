@@ -1,13 +1,23 @@
 // Routing-Algorithm : Link-State
 
 #include "./route_algo.h"
+#include "./route_message.h"
+#include "./thread_safe_queue.h"
 
+#include <map>
+#include <queue>
 #include <string>
-#include <vector>
 
 class RouteLS : public RouteAlgo {
    public:
-    int SendRouteMsg(std::string, std::string);
-    int RecvRouteMsg(std::string&);
-    std::vector<int> JudgePath(int, int);
+    vector<int> JudgePath(int, int);
+    int UpdateRouteMsg(string&);
+    queue<pair<string, string>> GenerateRouteMsg();
+
+    // more funcs ...
+
+   private:
+    map<string, LSAdvertisement> others_advertisements_;
+
+    // Queue<pair<string, string>> msg_to_send_; inherited from RouteAlgo
 };

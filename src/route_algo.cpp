@@ -1,5 +1,5 @@
 #include "route_algo.h"
-#include "route_message.h"
+#include "./route_message.cpp"
 
 #include <string>
 #include <vector>
@@ -11,4 +11,8 @@ int RouteAlgo::UpdateConnectivity(const std::string& raw_msg_str) {
     // update the connectivity_table_
     // ..
     return 0;
+}
+
+queue<pair<string, string>> RouteAlgo::GetOtherMsgToSend() {
+    // ..
 }
