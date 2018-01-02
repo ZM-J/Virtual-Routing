@@ -48,7 +48,7 @@ int SocketReceiver::ListenAndReceive(
     std::function<int(std::string)> ls_process,
     std::function<int(std::string)> dv_process) {
     recv_running_ = true;
-    while (running_) {
+    while (recv_running_) {
         // capture client addr
         struct sockaddr_in client_addr;
         socklen_t client_addr_length = sizeof(client_addr);
@@ -69,7 +69,7 @@ int SocketReceiver::ListenAndReceive(
         strncpy(msg_recv, buffer,
                 strlen(buffer) > MESSAGE_MAX_SIZE ? MESSAGE_MAX_SIZE
                                                   : strlen(buffer));
-        string msg_str(msg_recv);
+        std::string msg_str(msg_recv);
         switch (msg_str[0]) {
             case 'R':
                 // Reachability datagram
