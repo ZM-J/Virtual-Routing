@@ -21,5 +21,5 @@ class Args {
     static std::shared_ptr<Args> m_args;
 };
 
-enum RouteAlgoType { NONE_Algo, LS, DV };
-enum ActionMode { NONE_Action, NORMAL, CLIENT, CONTROLLER };
+enum class RouteAlgoType { NONE, LS, DV };
+enum class ActionMode { NONE, NORMAL, CLIENT, CONTROLLER };
