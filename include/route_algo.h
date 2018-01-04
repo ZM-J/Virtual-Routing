@@ -28,10 +28,14 @@ class RouteAlgo {
     //      received from other nodes (if needed)
     queue<pair<string, string>> GetOtherMsgToSend();
 
+	static const Args::CostType UNREACHABLE;
+
    protected:
-    std::vector<std::vector<int>> route_table_;
+    std::vector<int> route_table_;
     std::vector<std::vector<int>> connectivity_table_;
     Queue<pair<string, string>> msg_to_send_;
+
+	int default_rote_;
 };
 
 #endif

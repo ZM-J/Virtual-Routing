@@ -6,6 +6,8 @@
 
 using namespace std;
 
+const Args::CostType UNREACHABLE = Args::INFINITE;
+
 int RouteAlgo::UpdateConnectivity(const std::string& raw_msg_str) {
     ReachabilityMessage r_msg(raw_msg_str);
     // update the connectivity_table_

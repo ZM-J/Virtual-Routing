@@ -5,6 +5,9 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_map>
+#include <memory>
+#include <cstring>
 
 using namespace std;
 
@@ -36,57 +39,74 @@ struct ReachabilityMessage {
 };
 
 struct LSAdvertisement {
-    std::string generated_from_ip;
-    int seq_number;  // increases by 1 every time the source node generates a
-                     // new datagram.
-    std::vector<std::string> neighbor_ips;
+	static const unsigned int IPLEN = 16;
+	typedef int8_t CostFile;
+	typedef char IpFile[IPLEN];
 
-    LSAdvertisement() = default;
-    LSAdvertisement(const std::string& raw_msg_str) {
-        string::size_type pos_gen_ip_end = raw_msg_str.find('|');
-        string::size_type pos_seq_num_end = raw_msg_str.find(';');
-        // Remember to ignore the "L" Header (substr() start with index 1)
-        generated_from_ip = raw_msg_str.substr(1, pos_gen_ip_end);
-        seq_number = stoi(raw_msg_str.substr(
-            pos_gen_ip_end + 1, pos_seq_num_end - pos_gen_ip_end - 1));
+	typedef std::pair<std::string, CostFile> info;
+	std::string generated_from_ip;
+	std::vector<info> dv;
 
-        string::size_type pos_last_neighbor_ip_sep = pos_seq_num_end;
-        string::size_type pos_cur_neighbor_ip_sep;
-        // will automatically check if the neighbor_ips field exists
-        // string.find will also return a string::npos when start_pos is
-        //      out_of_range
-        while ((pos_cur_neighbor_ip_sep = raw_msg_str.find(
-                    ',', pos_last_neighbor_ip_sep + 1)) != string::npos) {
-            string cur_ip_neighbor = raw_msg_str.substr(
-                pos_last_neighbor_ip_sep + 1,
-                pos_cur_neighbor_ip_sep - pos_last_neighbor_ip_sep - 1);
-            neighbor_ips.push_back(std::move(cur_ip_neighbor));
-            pos_last_neighbor_ip_sep = pos_cur_neighbor_ip_sep;
-        }
-    }
-
-    std::string GetSerializedMsg() {
-        std::ostringstream ostrs;
-        // LS datagram Header: Start with a single "L"
-        ostrs << "L";
-        ostrs << generated_from_ip << "|";
-        ostrs << seq_number << ";";
-        for (auto& ip : neighbor_ips) {
-            ostrs << ip << ",";
-        }
-        return ostrs.str();
-    }
+	static_assert(sizeof(CostFile) == 1U, "For Endianness.");
+	LSAdvertisement() = default;
+	LSAdvertisement(const std::string& raw_msg_str) {
+		const char* data = raw_msg_str.c_str() + 1U;
+		const char* end = data + raw_msg_str.size();
+		generated_from_ip = data;
+		for (data += IPLEN; data < end; data += IPLEN + sizeof(CostFile)) {
+			dv.push_back(info(data, *(CostFile*)(data + IPLEN)));
+		}
+	}
+	std::string GetSerializedMsg() {
+		std::size_t len = IPLEN * dv.size() + IPLEN + 2U;
+		std::unique_ptr<char> msg(new char[len]);
+		char* data = msg.get();
+		*data = 'L';
+		data += 1U;
+		std::memcpy(data, generated_from_ip.c_str(), generated_from_ip.size());
+		data += IPLEN;
+		for (const auto& n : dv) {
+			std::memcpy(data, n.first.c_str(), n.first.size());
+			*(CostFile*)(data + IPLEN) = n.second;
+			data += IPLEN + sizeof(CostFile);
+		}
+		return msg.get();
+	}
 };
 
-struct DVAdvertisement {
-    // not determined yet, feel free to modify
 
+struct DVAdvertisement {
+	static const unsigned int IPLEN = 16;
+    typedef int8_t CostFile;
+    typedef char IpFile[IPLEN];
+
+	typedef std::pair<std::string, CostFile> info;
+    std::string generated_from_ip;
+    std::vector<info> dv;
+
+    static_assert(sizeof(CostFile) == 1U, "For Endianness.");
     DVAdvertisement() = default;
     DVAdvertisement(const std::string& raw_msg_str) {
-        // ..
+		const char* data = raw_msg_str.c_str() + 1U;
+		const char* end = data + raw_msg_str.size();
+		generated_from_ip = data;
+		for (data += IPLEN; data < end; data += IPLEN + sizeof(CostFile)) {
+			dv.push_back(info(data, *(CostFile*)(data + IPLEN)));
+		}
     }
-    std::string GetSerializedMsg() {
-        // ..
-        return "";
-    }
+	std::string GetSerializedMsg() {
+		std::size_t len = IPLEN * dv.size() + IPLEN + 2U;
+		std::unique_ptr<char> msg(new char[len]);
+		char* data = msg.get();
+		*data = 'D';
+		data += 1U;
+		std::memcpy(data, generated_from_ip.c_str(), generated_from_ip.size());
+		data += IPLEN;
+		for (const auto& n : dv) {
+			std::memcpy(data, n.first.c_str(), n.first.size());
+			*(CostFile*)(data + IPLEN) = n.second;
+			data += IPLEN + sizeof(CostFile);
+		}
+		return msg.get();
+	}
 };
