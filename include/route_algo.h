@@ -43,6 +43,21 @@ class RouteAlgo {
                 }
             return dirty;
         }
+
+        void Print(void) {
+            std::fprintf(stdout, "________________________________________%s________________________________________\n", "Timer");
+            auto args = Args::GetInstance();
+            for (std::size_t i = 0; i < time_.size(); i++)
+                std::fprintf(stdout, "%18s", args->GetIp(i).c_str());
+            std::fprintf(stdout, "\n");
+            for (std::size_t i = 0; i < time_.size(); i++) {
+                if (time_[i])
+                    std::fprintf(stdout, "%18.3fs", std::difftime(std::time(0), time_[i]));
+                else
+                    std::fprintf(stdout, "%18s", "Inf");
+            }
+            std::fprintf(stdout, "\n");
+        }
     } Timer;
     typedef struct Interfaces {
         DV dv_;
@@ -71,6 +86,21 @@ class RouteAlgo {
                 dv_.resize(node + 1U, 0);
             dv_[node] = UNREACHABLE;
         }
+
+        void Print(void) {
+            std::fprintf(stdout, "________________________________________%s________________________________________\n", "Interfaces");
+            auto args = Args::GetInstance();
+            for (std::size_t i = 0; i < dv_.size(); i++)
+                std::fprintf(stdout, "%18s", args->GetIp(i).c_str());
+            std::fprintf(stdout, "\n");
+            for (std::size_t i = 0; i < dv_.size(); i++) {
+                if (dv_[i] != UNREACHABLE)
+                    std::fprintf(stdout, "%18d", dv_[i]);
+                else
+                    std::fprintf(stdout, "%18s", "Inf");
+            }
+            std::fprintf(stdout, "\n");
+        }
     } Interfaces;
 
     RouteAlgo() = default;
@@ -85,6 +115,7 @@ class RouteAlgo {
 
     IpType GetNextHop(const std::size_t) const;
     std::pair<std::string, std::string> Send(void);
+    void RoutePrint(void) const;
 
    protected:
     std::vector<NodeType> route_table_;

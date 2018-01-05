@@ -73,6 +73,23 @@ class RouteLS : public RouteAlgo {
             } while (1);
             return prev;
         }
+
+        void Print(void) {
+            std::fprintf(stdout, "________________________________________%s________________________________________\n", "Graph");
+            std::fprintf(stdout, "%18s", "");
+            auto args = Args::GetInstance();
+            for (std::size_t i = 0; i < cost.size(); i++)
+                std::fprintf(stdout, "%18s", args->GetIp(i).c_str());
+            for (std::size_t i = 0; i < cost.size(); i++) {
+                std::fprintf(stdout, "\n%18s", args->GetIp(i).c_str());
+                for (std::size_t j = 0; j < cost[i].size(); j++)
+                    if (cost[i][j] != UNREACHABLE)
+                        std::fprintf(stdout, "%18d", cost[i][j]);
+                    else
+                        std::fprintf(stdout, "%18s", "Inf");
+            }
+            std::fprintf(stdout, "\n");
+        }
     } Graph;
 
    private:

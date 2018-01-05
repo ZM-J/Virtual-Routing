@@ -41,7 +41,7 @@ struct LSAdvertisement {
         const char* end = raw_msg_str.data() + raw_msg_str.size();
         generated_from_ip = data;
         for (data += IPLEN; data < end; data += IPLEN + sizeof(CostFile)) {
-            const char* p = data + IPLEN;
+            const unsigned char* p = (const unsigned char*)(data + IPLEN);
             CostFile tmp = 0;
             for (std::size_t i = 0; i < sizeof(CostFile); i++) {
                 tmp = (tmp << 8U) | p[i];
@@ -84,7 +84,7 @@ struct DVAdvertisement {
         const char* end = raw_msg_str.data() + raw_msg_str.size();
         generated_from_ip = data;
         for (data += IPLEN; data < end; data += IPLEN + sizeof(CostFile)) {
-            const char* p = data + IPLEN;
+            const unsigned char* p = (const unsigned char*)(data + IPLEN);
             CostFile tmp = 0;
             for (std::size_t i = 0; i < sizeof(CostFile); i++) {
                 tmp = (tmp << 8U) | p[i];

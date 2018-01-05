@@ -7,10 +7,8 @@
 #include "./route_message.h"
 #include "./socket_receiver.h"
 #include "./socket_sender.h"
-#include "./thread_safe_queue.h"
 
 #include <initializer_list>
-#include <map>
 #include <vector>
 
 /**
@@ -45,7 +43,6 @@ class RouteNode {
     std::thread th_recv_msg_;
     std::thread th_hb_msg_;
     std::thread th_commands_;
-    std::map<std::string, ReachabilityEnum> connectivity_;
 
     SocketSender sender_;
     SocketReceiver receiver_;

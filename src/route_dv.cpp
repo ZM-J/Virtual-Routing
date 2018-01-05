@@ -65,7 +65,7 @@ void RouteDV::GenerateRouteMsg() {
 	auto args = Args::GetInstance();
 	DVAdvertisement ad;
 	ad.generated_from_ip = args->GetIp(node_);
-    DV cost(intfes_.Get());
+    DV cost(dv_.Get(node_));
 	ad.dv.reserve(cost.size());
 	for (std::size_t i = 0; i < cost.size(); i++)
 		ad.dv.push_back(std::make_pair(args->GetIp(i),
