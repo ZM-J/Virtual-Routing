@@ -2,13 +2,13 @@
 #include "args.h"
 #include "route_dv.h"
 #include "route_ls.h"
-#include "route_message.cpp"
 
 #include <functional>
 #include <initializer_list>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -24,6 +24,7 @@ RouteNode::~RouteNode() {
 }
 
 int RouteNode::StartSendMsg() {
+    std::pair<std::string, std::string> msg;
     while (running_) {
         /* Send Message code
         auto msg_send = send_msg_queue_.pop();
@@ -37,8 +38,12 @@ int RouteNode::StartSendMsg() {
                 exit(1);
                 break;
             case ActionMode::NORMAL:
+                msg = route_algo_->Send();
+                sender_.Send(msg.first, msg.second);
                 break;
             case ActionMode::CLIENT:
+                msg = route_algo_->Send();
+                sender_.Send(msg.first, msg.second);
                 break;
             case ActionMode::CONTROLLER:
                 break;
@@ -48,16 +53,16 @@ int RouteNode::StartSendMsg() {
 }
 
 int RouteNode::StartRecvMsg() {
-    auto reachability_response = [&](ReachabilityMessage r_msg) -> int {
-        r_msg;
+    auto reachability_response = [&](std::string r_msg) -> int {
+        //r_msg;
         return 0;
     };
-    auto process_LS = [&](LSAdvertisement ls_msg) -> int {
-        ls_msg;
+    auto process_LS = [&](std::string msg) -> int {
+        route_algo_->UpdateRouteMsg(msg);
         return 0;
     };
-    auto process_DV = [&](DVAdvertisement dv_msg) -> int {
-        dv_msg;
+    auto process_DV = [&](std::string msg) -> int {
+        route_algo_->UpdateRouteMsg(msg);
         return 0;
     };
     receiver_.ListenAndReceive(reachability_response, process_LS, process_DV);
@@ -71,7 +76,7 @@ int RouteNode::WaitForCommands() {
     return 0;
 }
 
-int RouteNode::Start() {
+int RouteNode::Start(int node) {
     bool check_ok = true;
     if (algo_type_ == RouteAlgoType::NONE) {
         check_ok = false;
@@ -84,9 +89,17 @@ int RouteNode::Start() {
              << endl;
     }
     if (!check_ok) return 1;
+    route_algo_->SetNode(node);
+    running_ = true;
     th_send_msg_ = std::thread([&] { StartSendMsg(); });
     th_recv_msg_ = std::thread([&] { StartRecvMsg(); });
     th_commands_ = std::thread([&] { WaitForCommands(); });
+    th_hb_msg_ = std::thread([&] {
+        while (running_) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(RouteAlgo::PERIOD) * 1000));
+            route_algo_->CheckNode();
+        }
+    });
     return 0;
 }
 
@@ -95,6 +108,7 @@ int RouteNode::Stop() {
     th_send_msg_.join();
     th_recv_msg_.join();
     th_commands_.join();
+    th_hb_msg_.join();
     return 0;
 }
 
