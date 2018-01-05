@@ -1,5 +1,5 @@
-#include "./route_node.h"
-#include "./args.h"
+#include "route_node.h"
+#include "args.h"
 #include <string>
 #include <chrono>
 #include <thread>
