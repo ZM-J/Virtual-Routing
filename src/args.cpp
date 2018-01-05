@@ -1,29 +1,27 @@
 #include "args.h"
 
-#include <map>
-#include <string>
 #include <vector>
-
-using namespace std;
 
 std::shared_ptr<Args> Args::m_args = nullptr;
 const Args::CostType Args::INFINITE = 0x3f3f3f3f;
 
 Args::Args() {
     nodes_number_ = 5;
-    member_ips_[0] = "11.11.11.11";
-    member_ips_[1] = "22.22.22.22";
-    member_ips_[2] = "33.33.33.33";
-    member_ips_[3] = "44.44.44.44";
-    member_ips_[4] = "55.55.55.55";
+    node_to_ip_.resize(nodes_number_);
+    node_to_ip_[0] = "11.11.11.11";
+    node_to_ip_[1] = "22.22.22.22";
+    node_to_ip_[2] = "33.33.33.33";
+    node_to_ip_[3] = "44.44.44.44";
+    node_to_ip_[4] = "55.55.55.55";
 
-	for (const auto& n : member_ips_)
-		ip_to_node_[n.second] = n.first;
+	for (std::size_t i = 0; i < node_to_ip_.size(); i++)
+		ip_to_node_[node_to_ip_[i]] = i;
 
-    init_topo_table_ = std::vector<std::vector<int>>(5, std::vector<int>(5, 0));
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) init_topo_table_[i][j] = INFINITE;
-    }
+    init_topo_table_ = std::vector<DV>(nodes_number_, DV(nodes_number_, INFINITE));
+
+    for (std::size_t i = 0; i < init_topo_table_.size(); i++)
+        init_topo_table_[i][i] = 0;
+
     init_topo_table_[0][2] = init_topo_table_[2][0] = 3;
     init_topo_table_[0][3] = init_topo_table_[3][0] = 4;
     init_topo_table_[0][4] = init_topo_table_[4][0] = 6;
@@ -39,22 +37,22 @@ std::shared_ptr<Args> Args::GetInstance(void) {
     return m_args;
 }
 
-int Args::GetNodeNumber(void) const {
+std::size_t Args::GetNodeNumber(void) const {
 	return nodes_number_;
 }
 
-int Args::GetNode(const std::string & ip) const {
+Args::NodeType Args::GetNode(const Args::IpType & ip) const {
 	return ip_to_node_.at(ip);
 }
 
-std::string Args::GetIp(const int node) const {
-	return member_ips_.at(node);
+Args::IpType Args::GetIp(const Args::NodeType node) const {
+	return node_to_ip_.at(node);
 }
 
-std::vector<int> Args::GetInterfaces(const std::string & ip) const {
+Args::DV Args::GetInterfaces(const Args::IpType & ip) const {
 	return init_topo_table_.at(ip_to_node_.at(ip));
 }
 
-std::vector<int> Args::GetInterfaces(const int node) const {
+Args::DV Args::GetInterfaces(const Args::NodeType node) const {
 	return init_topo_table_.at(node);
 }

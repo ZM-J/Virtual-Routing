@@ -1,5 +1,5 @@
 CC := g++
-FLAGS := -std=c++14 -Wall
+FLAGS := -std=c++14 -Wall -pthread -g
 INC_DIR := ./include/
 SRC_DIR := src
 BUILD_DIR := build

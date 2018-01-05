@@ -26,7 +26,7 @@ class RouteNode {
    public:
     RouteNode();
     ~RouteNode();
-    int Start();
+    int Start(int);
     int Stop();
 
     int SetRouteAlgoType(RouteAlgoType);
@@ -43,12 +43,13 @@ class RouteNode {
     bool running_;
     std::thread th_send_msg_;
     std::thread th_recv_msg_;
+    std::thread th_hb_msg_;
     std::thread th_commands_;
     std::map<std::string, ReachabilityEnum> connectivity_;
 
     SocketSender sender_;
     SocketReceiver receiver_;
-    Queue<std::pair<std::string, std::string>> send_msg_queue_;
+    //Queue<std::pair<std::string, std::string>> send_msg_queue_;
     int StartSendMsg();
     int StartRecvMsg();
 

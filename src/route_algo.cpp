@@ -1,20 +1,13 @@
 #include "route_algo.h"
-#include "./route_message.cpp"
 
-#include <string>
-#include <vector>
+const RouteAlgo::CostType RouteAlgo::UNREACHABLE = Args::INFINITE;
+const double RouteAlgo::PERIOD = 5;
 
-using namespace std;
-
-const Args::CostType UNREACHABLE = Args::INFINITE;
-
-int RouteAlgo::UpdateConnectivity(const std::string& raw_msg_str) {
-    ReachabilityMessage r_msg(raw_msg_str);
-    // update the connectivity_table_
-    // ..
-    return 0;
+RouteAlgo::IpType RouteAlgo::GetNextHop(const std::size_t dest) const {
+    NodeType out = dest < route_table_.size() ? route_table_[dest] : default_route_;
+    return out == UNREACHABLE? "" : Args::GetInstance()->GetIp(out);
 }
 
-queue<pair<string, string>> RouteAlgo::GetOtherMsgToSend() {
-    // ..
+std::pair<std::string, std::string> RouteAlgo::Send(void) {
+    return msg_to_send_.pop();
 }

@@ -5,37 +5,95 @@
 #include "./args.h"
 #include "./thread_safe_queue.h"
 
-#include <map>
-#include <queue>
 #include <string>
 #include <vector>
-
-using namespace std;
+#include <utility>
+#include <ctime>
+#include <mutex>
 
 class RouteAlgo {
    public:
+
+    typedef Args::CostType CostType;
+    typedef Args::NodeType NodeType;
+    typedef Args::IpType IpType;
+    typedef Args::DV DV;
+
+    static const CostType UNREACHABLE;
+    static const double PERIOD;
+ 
+    typedef struct Timer {
+        std::vector<std::time_t> time_;
+        std::mutex tm_;
+
+        void SetTime(std::size_t node, std::time_t time = std::time(0)) {
+            std::lock_guard<std::mutex> guard(tm_);
+            if (node >= time_.size())
+                time_.resize(node + 1U, 0);
+            time_[node] = time;
+        }
+
+        std::vector<NodeType> CheckTime(void) {
+            std::vector<NodeType> dirty;
+            std::lock_guard<std::mutex> guard(tm_);
+            for (std::size_t i = 0; i < time_.size(); i++)
+                if (time_[i] && std::difftime(std::time(0), time_[i]) > PERIOD) {
+                    time_[i] = 0;
+                    dirty.push_back(i);
+                }
+            return dirty;
+        }
+    } Timer;
+    typedef struct Interfaces {
+        DV dv_;
+        std::mutex tm_;
+
+        DV Get(void) {
+            std::lock_guard<std::mutex> guard(tm_);
+            return dv_;
+        }
+
+        void Set(const DV& ot) {
+            std::lock_guard<std::mutex> guard(tm_);
+            dv_ = ot;
+        }
+
+        void Set(std::size_t node, CostType cost) {
+            std::lock_guard<std::mutex> guard(tm_);
+            if (node >= dv_.size())
+                dv_.resize(node + 1U, 0);
+            dv_[node] = cost;
+        }
+
+        void Del(std::size_t node) {
+            std::lock_guard<std::mutex> guard(tm_);
+            if (node >= dv_.size())
+                dv_.resize(node + 1U, 0);
+            dv_[node] = UNREACHABLE;
+        }
+    } Interfaces;
+
     RouteAlgo() = default;
     ~RouteAlgo() = default;
+
     virtual int UpdateRouteMsg(const std::string&) = 0;
     // GenereateRouteMsg is to Genereate route msg by itself
-    virtual queue<pair<string, string>> GenerateRouteMsg() = 0;
-    virtual std::vector<int> JudgePath(int, int) = 0;
+    virtual void GenerateRouteMsg() = 0;
 
-    // Receive a string message which is a Reachability raw Message
-    int UpdateConnectivity(const std::string&);
+    virtual void SetNode(const NodeType) = 0;
+    virtual void CheckNode(void) = 0;
 
-    // GetOtherMsgToSend is to broadcast datagrams
-    //      received from other nodes (if needed)
-    queue<pair<string, string>> GetOtherMsgToSend();
-
-	static const Args::CostType UNREACHABLE;
+    IpType GetNextHop(const std::size_t) const;
+    std::pair<std::string, std::string> Send(void);
 
    protected:
-    std::vector<int> route_table_;
-    std::vector<std::vector<int>> connectivity_table_;
-    Queue<pair<string, string>> msg_to_send_;
+    std::vector<NodeType> route_table_;
+    Queue<std::pair<std::string, std::string>> msg_to_send_;
 
-	int default_rote_;
+    NodeType node_;
+    NodeType default_route_;
+    Timer recv_time_;
+    Interfaces intfes_;
 };
 
 #endif
