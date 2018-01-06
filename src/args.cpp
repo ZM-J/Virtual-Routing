@@ -8,11 +8,11 @@ const Args::CostType Args::INFINITE = 0x3f3f3f3f;
 Args::Args() {
     nodes_number_ = 5;
     node_to_ip_.resize(nodes_number_);
-    node_to_ip_[0] = "11.11.11.11";
-    node_to_ip_[1] = "22.22.22.22";
-    node_to_ip_[2] = "33.33.33.33";
-    node_to_ip_[3] = "44.44.44.44";
-    node_to_ip_[4] = "55.55.55.55";
+    node_to_ip_[0] = "172.18.145.237";
+    node_to_ip_[1] = "172.18.156.5";
+    node_to_ip_[2] = "172.18.157.222";
+    node_to_ip_[3] = "172.18.159.29";
+    node_to_ip_[4] = "172.18.155.155";
 
     for (std::size_t i = 0; i < node_to_ip_.size(); i++)
         ip_to_node_[node_to_ip_[i]] = i;
