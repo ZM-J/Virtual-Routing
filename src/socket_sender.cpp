@@ -13,7 +13,9 @@
 #include <unistd.h>
 
 #include <string>
+#include "log.h"
 
+// #define SERVER_PORT 5188
 #define SERVER_PORT 43967
 #define BUFFER_SIZE 2048
 
@@ -32,16 +34,16 @@ SocketSender::SocketSender() {
 SocketSender::~SocketSender() { close(client_socket_fd); }
 
 int SocketSender::Send(std::string dest_ip, std::string msg) {
-    const char *dst_ip = dest_ip.c_str();
-    const char *msg_c = msg.c_str();
-    server_addr.sin_addr.s_addr = inet_addr(dst_ip);
+    const unsigned int num = msg.size();
+    if (num > BUFFER_SIZE)
+        return -1;
+    server_addr.sin_addr.s_addr = inet_addr(dest_ip.c_str());
+    // server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     char buffer[BUFFER_SIZE];
-    bzero(buffer, BUFFER_SIZE);
-    strncpy(buffer, msg_c,
-            strlen(msg_c) > BUFFER_SIZE ? BUFFER_SIZE : strlen(msg_c));
-    if (sendto(client_socket_fd, buffer, BUFFER_SIZE, 0,
+    memcpy(buffer, msg.data(), num);
+    if (sendto(client_socket_fd, buffer, num, 0,
                (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        // perror("send msg failed");
+        debug_log("send msg failed.\n");
     }
     return 0;
 }

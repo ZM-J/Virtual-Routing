@@ -14,21 +14,21 @@ Args::Args() {
     node_to_ip_[3] = "44.44.44.44";
     node_to_ip_[4] = "55.55.55.55";
 
-	for (std::size_t i = 0; i < node_to_ip_.size(); i++)
-		ip_to_node_[node_to_ip_[i]] = i;
+    for (std::size_t i = 0; i < node_to_ip_.size(); i++)
+        ip_to_node_[node_to_ip_[i]] = i;
 
     init_topo_table_ = std::vector<DV>(nodes_number_, DV(nodes_number_, INFINITE));
 
     for (std::size_t i = 0; i < init_topo_table_.size(); i++)
         init_topo_table_[i][i] = 0;
 
-    init_topo_table_[0][2] = init_topo_table_[2][0] = 3;
-    init_topo_table_[0][3] = init_topo_table_[3][0] = 4;
-    init_topo_table_[0][4] = init_topo_table_[4][0] = 6;
+    NodeType pa[] = {0, 0, 0, 1, 1, 3};
+    NodeType pb[] = {2, 3, 4, 2, 3, 4};
+    NodeType cost[] = {6, 5, 22, 10, 4, 3};
 
-    init_topo_table_[1][3] = init_topo_table_[3][1] = 2;
-    init_topo_table_[1][4] = init_topo_table_[4][1] = 6;
-    init_topo_table_[2][3] = init_topo_table_[3][2] = 8;
+    for (int i = sizeof(pa)/sizeof(pa[0]); i--; ) {
+        init_topo_table_[pb[i]][pa[i]] = init_topo_table_[pa[i]][pb[i]] = cost[i];
+    }
 }
 Args::~Args() { Args::m_args = nullptr; }
 
@@ -38,21 +38,21 @@ std::shared_ptr<Args> Args::GetInstance(void) {
 }
 
 std::size_t Args::GetNodeNumber(void) const {
-	return nodes_number_;
+    return nodes_number_;
 }
 
 Args::NodeType Args::GetNode(const Args::IpType & ip) const {
-	return ip_to_node_.at(ip);
+    return ip_to_node_.at(ip);
 }
 
 Args::IpType Args::GetIp(const Args::NodeType node) const {
-	return node_to_ip_.at(node);
+    return node_to_ip_.at(node);
 }
 
 Args::DV Args::GetInterfaces(const Args::IpType & ip) const {
-	return init_topo_table_.at(ip_to_node_.at(ip));
+    return init_topo_table_.at(ip_to_node_.at(ip));
 }
 
 Args::DV Args::GetInterfaces(const Args::NodeType node) const {
-	return init_topo_table_.at(node);
+    return init_topo_table_.at(node);
 }

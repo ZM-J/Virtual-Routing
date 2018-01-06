@@ -22,8 +22,8 @@ class Args {
     std::size_t GetNodeNumber(void) const;
     NodeType GetNode(const IpType&) const;
     IpType GetIp(const NodeType) const;
-	DV GetInterfaces(const NodeType) const;
-	DV GetInterfaces(const IpType&) const;
+    DV GetInterfaces(const NodeType) const;
+    DV GetInterfaces(const IpType&) const;
 
    protected:
     // Total Number of Nodes
@@ -32,7 +32,7 @@ class Args {
     std::vector<DV> init_topo_table_;
 
     std::vector<IpType> node_to_ip_;
-	std::unordered_map<IpType, NodeType> ip_to_node_;
+    std::unordered_map<IpType, NodeType> ip_to_node_;
 
    private:
     Args();

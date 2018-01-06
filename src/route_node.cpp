@@ -96,7 +96,7 @@ int RouteNode::Start(int node) {
     th_commands_ = std::thread([&] { WaitForCommands(); });
     th_hb_msg_ = std::thread([&] {
         while (running_) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(RouteAlgo::PERIOD) * 1000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(RouteAlgo::PERIOD) / 5 * 1000));
             route_algo_->CheckNode();
         }
     });

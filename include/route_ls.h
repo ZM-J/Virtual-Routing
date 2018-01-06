@@ -13,7 +13,7 @@ class RouteLS : public RouteAlgo {
    public:
 
     int UpdateRouteMsg(const std::string&);
-	void GenerateRouteMsg();
+    void GenerateRouteMsg();
     void SetNode(const NodeType);
     void CheckNode(void);
 
@@ -93,7 +93,7 @@ class RouteLS : public RouteAlgo {
     } Graph;
 
    private:
-	Graph graph_;
+    Graph graph_;
 };
 
 #endif
