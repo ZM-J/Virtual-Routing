@@ -21,7 +21,7 @@ class RouteAlgo {
 
     static const CostType UNREACHABLE;
     static const double PERIOD;
- 
+
     typedef struct Timer {
         std::vector<std::time_t> time_;
         std::mutex tm_;

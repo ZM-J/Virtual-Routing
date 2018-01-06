@@ -55,21 +55,15 @@ int SocketReceiver::ListenAndReceive(
 
         // recv datagram
         char buffer[BUFFER_SIZE];
-        bzero(buffer, BUFFER_SIZE);
-        if (recvfrom(server_socket_fd, buffer, BUFFER_SIZE, 0,
+        int num = recvfrom(server_socket_fd, buffer, BUFFER_SIZE, 0,
                      (struct sockaddr *)&client_addr,
-                     &client_addr_length) == -1) {
-            perror("Receive Data Failed:");
+                     &client_addr_length);
+        if (num == -1) {
+            perror("Receive Data Failed.n");
             // exit(1);
         }
 
-        // output buffer
-        char msg_recv[MESSAGE_MAX_SIZE + 1];
-        bzero(msg_recv, MESSAGE_MAX_SIZE + 1);
-        strncpy(msg_recv, buffer,
-                strlen(buffer) > MESSAGE_MAX_SIZE ? MESSAGE_MAX_SIZE
-                                                  : strlen(buffer));
-        std::string msg_str(msg_recv);
+        std::string msg_str(buffer, num);
         switch (msg_str[0]) {
             case 'R':
                 // Reachability datagram
